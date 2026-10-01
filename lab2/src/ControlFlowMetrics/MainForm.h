@@ -1,6 +1,6 @@
 #pragma once
 // ============================================================================
-//  MainForm.h — метрики Джилба и Маккейба для программ на Perl.
+//  MainForm.h — метрики Джилба для программ на Perl.
 //
 //  Это C++/CLI — C++ с расширениями для .NET. Напоминание по синтаксису:
 //    ref class X          — класс, живущий в управляемой куче .NET;
@@ -123,9 +123,9 @@ namespace ControlFlowMetrics
         System::Windows::Forms::Label^ lblNTitle;
         System::Windows::Forms::Label^ lblNValue;
         System::Windows::Forms::Label^ lblNFormula;
-        System::Windows::Forms::Panel^ cardV;
-        System::Windows::Forms::Label^ lblVTitle;
-        System::Windows::Forms::Label^ lblVValue;
+        System::Windows::Forms::Panel^ cardCli;
+        System::Windows::Forms::Label^ lblCliTitle;
+        System::Windows::Forms::Label^ lblCliValue;
         System::Windows::Forms::StatusStrip^ statusStrip;
         System::Windows::Forms::ToolStripStatusLabel^ lblStatus;
         System::Windows::Forms::Timer^ timer;
@@ -172,9 +172,9 @@ namespace ControlFlowMetrics
             this->lblNTitle = (gcnew System::Windows::Forms::Label());
             this->lblNValue = (gcnew System::Windows::Forms::Label());
             this->lblNFormula = (gcnew System::Windows::Forms::Label());
-            this->cardV = (gcnew System::Windows::Forms::Panel());
-            this->lblVTitle = (gcnew System::Windows::Forms::Label());
-            this->lblVValue = (gcnew System::Windows::Forms::Label());
+            this->cardCli = (gcnew System::Windows::Forms::Panel());
+            this->lblCliTitle = (gcnew System::Windows::Forms::Label());
+            this->lblCliValue = (gcnew System::Windows::Forms::Label());
             this->statusStrip = (gcnew System::Windows::Forms::StatusStrip());
             this->lblStatus = (gcnew System::Windows::Forms::ToolStripStatusLabel());
             this->timer = (gcnew System::Windows::Forms::Timer(this->components));
@@ -191,7 +191,7 @@ namespace ControlFlowMetrics
             this->tableCards->SuspendLayout();
             this->cardEta->SuspendLayout();
             this->cardN->SuspendLayout();
-            this->cardV->SuspendLayout();
+            this->cardCli->SuspendLayout();
             this->statusStrip->SuspendLayout();
             this->SuspendLayout();
             //
@@ -217,7 +217,7 @@ namespace ControlFlowMetrics
             this->lblTitle->ForeColor = System::Drawing::Color::FromArgb(17, 24, 39);
             this->lblTitle->Location = System::Drawing::Point(20, 12);
             this->lblTitle->Name = L"lblTitle";
-            this->lblTitle->Text = L"Метрики Джилба и Маккейба";
+            this->lblTitle->Text = L"Метрики Джилба";
             //
             // lblSubtitle
             //
@@ -387,7 +387,7 @@ namespace ControlFlowMetrics
             this->lblTableTitle->Text = L"Операторы ветвления и операторы программы";
             this->lblTableTitle->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
             //
-            // lblBasic — сводка η1, N1, η2, N2
+            // lblBasic — сводка CL, N и CLI
             //
             this->lblBasic->AutoSize = true;
             this->lblBasic->Dock = System::Windows::Forms::DockStyle::Right;
@@ -478,7 +478,7 @@ namespace ControlFlowMetrics
             this->tableCards->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent, 33.34F)));
             this->tableCards->Controls->Add(this->cardEta, 0, 0);
             this->tableCards->Controls->Add(this->cardN, 1, 0);
-            this->tableCards->Controls->Add(this->cardV, 2, 0);
+            this->tableCards->Controls->Add(this->cardCli, 2, 0);
             this->tableCards->Dock = System::Windows::Forms::DockStyle::Fill;
             this->tableCards->Margin = System::Windows::Forms::Padding(0);
             this->tableCards->Name = L"tableCards";
@@ -543,27 +543,27 @@ namespace ControlFlowMetrics
             this->lblNFormula->Name = L"lblNFormula";
             this->lblNFormula->Text = L"";
             //
-            // cardV — объём программы
+            // cardCli — максимальная вложенность
             //
-            this->cardV->BackColor = System::Drawing::Color::White;
-            this->cardV->Controls->Add(this->lblVValue);
-            this->cardV->Controls->Add(this->lblVTitle);
-            this->cardV->Dock = System::Windows::Forms::DockStyle::Fill;
-            this->cardV->Margin = System::Windows::Forms::Padding(0, 14, 0, 0);
-            this->cardV->Name = L"cardV";
-            this->cardV->Padding = System::Windows::Forms::Padding(16, 12, 16, 8);
-            this->lblVTitle->Dock = System::Windows::Forms::DockStyle::Top;
-            this->lblVTitle->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point));
-            this->lblVTitle->ForeColor = System::Drawing::Color::FromArgb(107, 114, 128);
-            this->lblVTitle->Height = 22;
-            this->lblVTitle->Name = L"lblVTitle";
-            this->lblVTitle->Text = L"Оценка Маккейба V(G) / вложенность CLI";
-            this->lblVValue->Dock = System::Windows::Forms::DockStyle::Top;
-            this->lblVValue->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point));
-            this->lblVValue->ForeColor = System::Drawing::Color::FromArgb(37, 99, 235);
-            this->lblVValue->Height = 52;
-            this->lblVValue->Name = L"lblVValue";
-            this->lblVValue->Text = L"—";
+            this->cardCli->BackColor = System::Drawing::Color::White;
+            this->cardCli->Controls->Add(this->lblCliValue);
+            this->cardCli->Controls->Add(this->lblCliTitle);
+            this->cardCli->Dock = System::Windows::Forms::DockStyle::Fill;
+            this->cardCli->Margin = System::Windows::Forms::Padding(0, 14, 0, 0);
+            this->cardCli->Name = L"cardCli";
+            this->cardCli->Padding = System::Windows::Forms::Padding(16, 12, 16, 8);
+            this->lblCliTitle->Dock = System::Windows::Forms::DockStyle::Top;
+            this->lblCliTitle->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point));
+            this->lblCliTitle->ForeColor = System::Drawing::Color::FromArgb(107, 114, 128);
+            this->lblCliTitle->Height = 22;
+            this->lblCliTitle->Name = L"lblCliTitle";
+            this->lblCliTitle->Text = L"Максимальная вложенность CLI";
+            this->lblCliValue->Dock = System::Windows::Forms::DockStyle::Top;
+            this->lblCliValue->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point));
+            this->lblCliValue->ForeColor = System::Drawing::Color::FromArgb(37, 99, 235);
+            this->lblCliValue->Height = 52;
+            this->lblCliValue->Name = L"lblCliValue";
+            this->lblCliValue->Text = L"—";
             //
             // statusStrip
             //
@@ -599,7 +599,7 @@ namespace ControlFlowMetrics
             this->MinimumSize = System::Drawing::Size(1100, 700);
             this->Name = L"MainForm";
             this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
-            this->Text = L"Метрики Джилба и Маккейба — Perl";
+            this->Text = L"Метрики Джилба — Perl";
             this->Load += gcnew System::EventHandler(this, &MainForm::MainForm_Load);
             this->DragEnter += gcnew System::Windows::Forms::DragEventHandler(this, &MainForm::MainForm_DragEnter);
             this->DragDrop += gcnew System::Windows::Forms::DragEventHandler(this, &MainForm::MainForm_DragDrop);
@@ -617,7 +617,7 @@ namespace ControlFlowMetrics
             this->tableCards->ResumeLayout(false);
             this->cardEta->ResumeLayout(false);
             this->cardN->ResumeLayout(false);
-            this->cardV->ResumeLayout(false);
+            this->cardCli->ResumeLayout(false);
             this->statusStrip->ResumeLayout(false);
             this->statusStrip->PerformLayout();
             this->ResumeLayout(false);
@@ -715,10 +715,9 @@ namespace ControlFlowMetrics
                     sb->Append(String::Format(L"{0}\t{1}\t{2}", r + 1, ToNet(lastResult->operands[r].name), lastResult->operands[r].count));
                 sb->AppendLine();
             }
-            sb->AppendLine(String::Format(L"CL = {0}\tN = {1}\tCLI = {2}\tV(G) = {3}", lastResult->eta1, lastResult->N1, lastResult->eta2, lastResult->N2));
+            sb->AppendLine(String::Format(L"CL = {0}\tN = {1}\tCLI = {2}", lastResult->eta1, lastResult->N1, lastResult->eta2));
             sb->AppendLine();
             sb->AppendLine(String::Format(L"Относительная сложность cl = CL / N = {0} / {1} = {2:F4}", lastResult->eta1, lastResult->N1, lastResult->V));
-            sb->AppendLine(String::Format(L"Оценка цикломатической сложности V(G) = {0} (с учётом отдельных подпрограмм и кратких логических операций)", lastResult->N2));
             sb->AppendLine(String::Format(L"Максимальный уровень вложенности CLI = {0}", lastResult->eta2));
             Clipboard::SetText(sb->ToString());
             lblStatus->Text = L"Таблица и метрики скопированы в буфер обмена";
@@ -734,7 +733,7 @@ namespace ControlFlowMetrics
             {
                 String^ text = File::ReadAllText(path);        // кодировка: UTF-8 (с BOM или без)
                 lblFile->Text = path;
-                this->Text = L"Метрики Джилба и Маккейба — " + Path::GetFileName(path);
+                this->Text = L"Метрики Джилба — " + Path::GetFileName(path);
                 timer->Stop();
                 txtCode->Text = text;                            // вызовет TextChanged, но таймер мы остановим
                 timer->Stop();
@@ -761,8 +760,8 @@ namespace ControlFlowMetrics
             FillGrid();
             FillCards();
 
-            lblBasic->Text = String::Format(L"CL = {0}     N = {1}     CLI = {2}     V(G) = {3}",
-                                            lastResult->eta1, lastResult->N1, lastResult->eta2, lastResult->N2);
+            lblBasic->Text = String::Format(L"CL = {0}     N = {1}     CLI = {2}",
+                                            lastResult->eta1, lastResult->N1, lastResult->eta2);
             lblStatus->Text = String::Format(L"Строк: {0}   ·   операторов: {1}   ·   ветвлений: {2}   ·   cl = {3:F4}   ·   щёлкните по строке для подсветки",
                                              lastResult->lineCount, lastResult->N1, lastResult->eta1, lastResult->V);
         }
@@ -798,7 +797,7 @@ namespace ControlFlowMetrics
             // Итоговая строка метрик потока управления
             int idx = grid->Rows->Add(gcnew cli::array<Object^>(6) {
                 L"CL = " + lastResult->eta1, L"", L"N = " + lastResult->N1,
-                L"CLI = " + lastResult->eta2, L"", L"V(G) = " + lastResult->N2 });
+                L"", L"", L"CLI = " + lastResult->eta2 });
             DataGridViewRow^ total = grid->Rows[idx];
             total->DefaultCellStyle->BackColor = Color::FromArgb(238, 242, 255);
             total->DefaultCellStyle->SelectionBackColor = Color::FromArgb(238, 242, 255);
@@ -819,7 +818,7 @@ namespace ControlFlowMetrics
             lblNValue->Text = String::Format(L"{0:F4}", lastResult->V);
             lblNFormula->Text = String::Format(L"cl = {0} / {1}", lastResult->eta1, lastResult->N1);
 
-            lblVValue->Text = String::Format(L"{0} / {1}", lastResult->N2, lastResult->eta2);
+            lblCliValue->Text = lastResult->eta2.ToString();
         }
 
         // Щелчок по строке таблицы: подсветить в коде все вхождения выбранного оператора/операнда

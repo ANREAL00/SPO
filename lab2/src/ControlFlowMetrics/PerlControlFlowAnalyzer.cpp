@@ -234,7 +234,7 @@ void makeEntries(AnalysisResult& r) {
 AnalysisResult PerlControlFlowAnalyzer::analyze(const std::wstring& code) {
     AnalysisResult r;
     const std::vector<RawToken> ts = lex(code);
-    enum class BlockKind { Other, IfBranch, ElsifBranch, ElseBranch, Loop, Given, When, Default, Sub, Do };
+    enum class BlockKind { Other, IfBranch, ElsifBranch, ElseBranch, Loop, Given, When, Default, Do };
     struct Body { BlockKind kind; int depth; int conditionDepth; };
     struct Block { BlockKind kind; int previousDepth; int conditionDepth; int whenCount; };
     std::map<size_t, Body> scheduled;
@@ -243,9 +243,6 @@ AnalysisResult PerlControlFlowAnalyzer::analyze(const std::wstring& code) {
     int currentDepth = 0;
     int nextChainDepth = -1;
     int ternaryDepth = 0;
-    int subCount = 0;
-    int shortCircuitCount = 0;
-    bool hasMain = false;
     bool justClosedDo = false;
     bool postTestTerminator = false;
 
@@ -257,10 +254,6 @@ AnalysisResult PerlControlFlowAnalyzer::analyze(const std::wstring& code) {
     auto statement = [&](const std::wstring& name, const RawToken& t) {
         add(r.tokens, name, TokenKind::Operand, t);
         ++r.N1;
-    };
-    auto inSub = [&]() {
-        for (const Block& b : blocks) if (b.kind == BlockKind::Sub) return true;
-        return false;
     };
     auto schedule = [&](size_t i, BlockKind kind, int bodyDepth, int conditionDepth) {
         int brace = bodyBraceAfter(ts, i);
@@ -278,12 +271,10 @@ AnalysisResult PerlControlFlowAnalyzer::analyze(const std::wstring& code) {
         if (t.kind == RawToken::Kind::Word) {
             if (t.text == L"sub") {
                 statement(L"sub", t);
-                ++subCount;
-                schedule(i, BlockKind::Sub, currentDepth, currentDepth);
                 continue;
             }
             if (t.text == L"given") {
-                statement(L"given", t); // selector is an operator, but not a condition
+                statement(L"given", t);
                 schedule(i, BlockKind::Given, currentDepth, currentDepth);
                 continue;
             }
@@ -344,9 +335,6 @@ AnalysisResult PerlControlFlowAnalyzer::analyze(const std::wstring& code) {
             continue;
         }
         if (t.text == L":" && ternaryDepth > 0) { --ternaryDepth; continue; }
-        if (t.text == L"&&" || t.text == L"||" || t.text == L"//" ||
-            t.text == L"and" || t.text == L"or") ++shortCircuitCount;
-
         if (t.kind == RawToken::Kind::OpenBrace) {
             Body body{BlockKind::Other, currentDepth, currentDepth};
             auto it = scheduled.find(i);
@@ -370,13 +358,9 @@ AnalysisResult PerlControlFlowAnalyzer::analyze(const std::wstring& code) {
             if (forHeaderSemicolons.count(i)) continue;
             if (postTestTerminator) { postTestTerminator = false; continue; }
             statement(L"простой оператор", t);
-            if (!inSub()) hasMain = true;
             ternaryDepth = 0;
         }
     }
-    r.eta = r.eta1;
-    r.N = subCount + (hasMain ? 1 : 0);
-    r.N2 = r.eta1 + shortCircuitCount + r.N;
     r.V = r.N1 ? (double)r.eta1 / r.N1 : 0.0;
     for (wchar_t c : code) if (c == L'\n') ++r.lineCount;
     if (!code.empty() && code.back() != L'\n') ++r.lineCount;
